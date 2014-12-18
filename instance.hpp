@@ -11,7 +11,6 @@
 #include "square.hpp"
 #include "walk.hpp"
 #include "my_array.hpp"
-#include "multiplicity.hpp"
 #include "nearest_neighbour.hpp"
 #include "radius.hpp"
 #include "flatperm.hpp"
@@ -48,7 +47,6 @@ struct instance
 
   uint64_t samples;
   features::radius<point> radius;
-  features::multiplicity multiplicity;
   features::nearest_neighbour nearest_neighbour;
   my_array<long double, num_flatperm_indices> Re2W, Rg2W, Rm2W;
 
@@ -150,7 +148,6 @@ struct instance
 
     walk.register_step(x);
     radius.register_step(walk);
-    multiplicity.register_step(walk);
     nearest_neighbour.register_step(walk);
 
     flatperm.indices[0] = walk.size();
@@ -188,7 +185,6 @@ struct instance
   void unregister_step()
   {
     nearest_neighbour.unregister_step(walk);
-    multiplicity.unregister_step(walk);
     radius.unregister_step(walk);
     walk.unregister_step();
 

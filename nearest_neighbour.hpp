@@ -22,16 +22,10 @@
       // fetch the last point
       auto const& x = walk.back();
 
-      if (walk.has_point(x) > 1) {
-        // if stepping into a multiply visited site, erase a contact
-        // because we just stepped over it
-        _m -= 1;
-      } else {
-        // iterate over the neighbours looking for new contacts
-        for (auto const& y : Walk::lattice_type::get_neighbours(x)) {
-          if (walk.has_point(y) and not walk.has_bond(x, y))
-            _m += 1;
-        }
+      // iterate over x's neighbours looking for new contacts
+      for (auto const& y : Walk::lattice_type::get_neighbours(x)) {
+        if (walk.has_point(y))
+          _m += 1;
       }
     }
 
@@ -41,16 +35,10 @@
       // fetch the last point
       auto const& x = walk.back();
 
-      if (walk.has_point(x) > 1) {
-        // if stepping away from multiply visited site, we are
-        // creating a contact.
-        _m += 1;
-      } else {
-        // iterate over its neighbours
-        for (auto const& y : Walk::lattice_type::get_neighbours(x)) {
-          if (walk.has_point(y) and not walk.has_bond(x, y))
-            _m -= 1;
-        }
+      // iterate over x's neighbours
+      for (auto const& y : Walk::lattice_type::get_neighbours(x)) {
+        if (walk.has_point(y))
+          _m -= 1;
       }
     }
 
