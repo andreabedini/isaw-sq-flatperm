@@ -108,16 +108,12 @@ namespace lattices {
 
     static std::vector<point> get_neighbours(point const& c)
     {
-      std::vector<point> neighbours = { c + point{1,0}, c + point{0,1} };
-      auto l = c + point{-1,0};
-      if (l[0] + l[1] >= 0)
-        neighbours.push_back(l);
-
-      auto d = c + point{0,-1};
-      if (d[0] + d[1] >= 0)
-        neighbours.push_back(d);
-
-      return neighbours;
+      return std::vector<point>{
+        c + point{ 1, 0},
+        c + point{ 0, 1},
+        c + point{-1, 0},
+        c + point{ 0,-1}
+      };
     }
 
     static const point origin() { return point{0, 0}; };
