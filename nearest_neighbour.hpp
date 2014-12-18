@@ -24,7 +24,7 @@
 
       // iterate over x's neighbours looking for new contacts
       for (auto const& y : Walk::lattice_type::get_neighbours(x)) {
-        if (walk.has_point(y))
+        if (walk.has_point(y) and not walk.has_bond(x, y))
           _m += 1;
       }
     }
@@ -37,7 +37,7 @@
 
       // iterate over x's neighbours
       for (auto const& y : Walk::lattice_type::get_neighbours(x)) {
-        if (walk.has_point(y))
+        if (walk.has_point(y) and not walk.has_bond(x, y))
           _m -= 1;
       }
     }
