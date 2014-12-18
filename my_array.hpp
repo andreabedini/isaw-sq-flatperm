@@ -10,7 +10,7 @@ template<typename ValueType, size_t D>
 class my_array {
 public:
   static const size_t NumDims = D;
-  
+
   typedef size_t size_type;
 
   typedef ValueType        value_type;
@@ -32,7 +32,12 @@ private:
     const size_t offset;
 
     operator reference() { return array.__data[offset]; }
-    
+
+    template<typename T>
+    reference operator=(T const& t) {
+      return array.__data[offset] = t;
+    }
+
     helper<I + 1> operator[](size_t i) const {
       return helper<I + 1>{array, i + array.__extents[I] * offset};
     }
@@ -65,7 +70,7 @@ public:
   size_t num_elements() const
   {
     return std::accumulate(std::begin(__extents), std::end(__extents),
-			   1, std::multiplies<size_type>());
+      1, std::multiplies<size_type>());
   }
 
   iterator begin() { return __data.begin(); }
@@ -103,7 +108,7 @@ public:
 namespace hdf5 {
   template <typename ValueType, size_t NumDims>
   void load(handle loc, my_array<ValueType, NumDims>& h,
-	    const char* name)
+    const char* name)
   {
     datatype type = datatype_from<ValueType>::value();
     std::array<hsize_t, NumDims> extents;
@@ -113,12 +118,12 @@ namespace hdf5 {
     ( link_exists(loc, name)
       ? dataset::open(loc, name)
       : dataset::create(loc, name, type, space) )
-      .read(type, space, h.data());
+    .read(type, space, h.data());
   }
 
   template <typename ValueType, size_t NumDims>
   void save(handle loc, my_array<ValueType, NumDims> const& h,
-	    const char* name)
+    const char* name)
   {
     datatype type = datatype_from<ValueType>::value();
     std::array<hsize_t, NumDims> extents;
@@ -128,7 +133,7 @@ namespace hdf5 {
     ( link_exists(loc, name)
       ? dataset::open(loc, name)
       : dataset::create(loc, name, type, space) )
-      .write(type, space, h.data());
+    .write(type, space, h.data());
   }
 }
 
